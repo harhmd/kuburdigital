@@ -1,5 +1,8 @@
 FROM node:20-alpine
 
+# Install curl and wget for reliable healthchecks in Alpine
+RUN apk add --no-cache curl wget
+
 WORKDIR /app
 
 # Install dependencies
