@@ -1,0 +1,12 @@
+services:
+  kuburdigital:
+    build: .
+    container_name: kuburdigital
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:PG18_Admin_9a8f7d@postgres18-xqromzklsqsmfiaqiz6hbe3d:5432/postgreq18}

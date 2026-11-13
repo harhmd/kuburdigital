@@ -1,0 +1,26 @@
+{
+  "name": "kuburdigital",
+  "version": "1.0.0",
+  "description": "Sistem Pengurusan Jenazah & Peta Kubur Digital 200 Lot - MASJID AL-JAWAHIR, PENGKALAN BALAK, Melaka",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "pengurusan-jenazah",
+    "peta-kubur-digital",
+    "gis",
+    "masjid-al-jawahir",
+    "coolify",
+    "postgresql18"
+  ],
+  "author": "Ts. Hj Nor Azhar Abdul Hamid",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "pg": "^8.13.1"
+  }
+}

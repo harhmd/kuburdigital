@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Bottom Navigation Bar Designs - 3 Interactive Styles</title>
+  
+  <!-- Modern Google Font: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            primary: {
+              DEFAULT: '#4F46E5',
+              dark: '#4338CA',
+              light: '#818CF8',
+              surface: '#EEF2FF'
+            }
+          },
+          boxShadow: {
+            'nav-float': '0 20px 40px -12px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(15, 23, 42, 0.05)',
+            'nav-glow': '0 12px 30px -8px rgba(79, 70, 229, 0.25)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Smooth transitions for all animated nav elements */
+    .nav-indicator-line {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s ease;
+    }
+
+    .nav-indicator-capsule {
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .nav-tab-btn {
+      transition: color 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-tab-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Style 2: Smooth SVG notched path animation */
+    .notch-path {
+      transition: d 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .notch-dot {
+      transition: cx 0.35s cubic-bezier(0.34, 1.3, 0.64, 1), cy 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    /* Code block styling */
+    pre code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#4644eb] min-h-screen text-slate-900 font-sans antialiased flex flex-col items-center justify-between p-4 sm:p-8">
+
+  <!-- TOP HEADER / BADGE -->
+  <header class="w-full max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4 py-4 px-2 text-white">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center shadow-lg">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight">Bottom Navigation Bar Collection</h1>
+        <p class="text-xs text-white/70">3 modern UI design variants with smooth micro-interactions</p>
+      </div>
+    </div>
+
+    <!-- Right Controls: Audio haptic & Background theme switcher -->
+    <div class="flex items-center gap-2">
+      <a href="/index.html" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/30 text-emerald-200 text-xs font-semibold backdrop-blur-md flex items-center gap-1.5 transition" title="Buka Sistem Pengurusan Jenazah">
+        <span>🕌</span>
+        <span class="hidden sm:inline">Sistem Masjid</span>
+      </a>
+      <button id="soundToggleBtn" onclick="toggleHaptics()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold backdrop-blur-md flex items-center gap-1.5 transition">
+        <span id="soundIcon">🔊</span>
+        <span id="soundLabel" class="hidden sm:inline">Haptic Audio: ON</span>
+      </button>
+      <button onclick="toggleCodeModal()" class="px-3.5 py-1.5 rounded-xl bg-white text-indigo-700 hover:bg-indigo-50 font-bold text-xs shadow-md transition flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+        </svg>
+        <span>View Code</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CANVAS: 3 NAVIGATION BARS DISPLAY -->
+  <main class="w-full max-w-xl mx-auto my-auto flex flex-col items-center gap-8 py-6">
+
+    <!-- ========================================================================= -->
+    <!-- VARIANT 1: MINIMAL UNDERLINE SLIDER (ICON ONLY)                          -->
+    <!-- ========================================================================= -->
+    <div class="w-full flex flex-col items-center gap-2.5">
+      <div class="flex items-center justify-between w-full max-w-[420px] px-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-white/80 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          Variant 1: Minimal Underline
+        </span>
+        <span class="text-[11px] font-mono text-white/60">Icon Only &bull; Sliding Bar</span>
+      </div>
+
+      <!-- Nav Bar 1 Element -->
+      <div class="relative w-full max-w-[420px] bg-white rounded-[34px] shadow-nav-float p-2.5 px-4 flex items-center justify-between border border-white/40 select-none">
+        <!-- 5 Nav Buttons -->
+        <div class="relative flex items-center justify-between w-full h-[62px]" id="nav1Container">
+          
+          <!-- Tab 1: Home -->
+          <button onclick="setActiveNav1(0, this)" class="nav1-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center text-indigo-600 focus:outline-none relative group">
+            <svg class="w-6 h-6 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-9z"/>
+            </svg>
+          </button>
+
+          <!-- Tab 2: Search -->
+          <button onclick="setActiveNav1(1, this)" class="nav1-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 focus:outline-none relative group">
+            <svg class="w-6 h-6 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+            </svg>
+          </button>
+
+          <!-- Tab 3: Likes -->
+          <button onclick="setActiveNav1(2, this)" class="nav1-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 focus:outline-none relative group">
+            <svg class="w-6 h-6 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+            </svg>
+          </button>
+
+          <!-- Tab 4: Notifications -->
+          <button onclick="setActiveNav1(3, this)" class="nav1-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 focus:outline-none relative group">
+            <svg class="w-6 h-6 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+            </svg>
+          </button>
+
+          <!-- Tab 5: Profile -->
+          <button onclick="setActiveNav1(4, this)" class="nav1-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 focus:outline-none relative group">
+            <svg class="w-6 h-6 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+          </button>
+
+          <!-- Smooth Sliding Underline -->
+          <div id="nav1Indicator" class="nav-indicator-line absolute bottom-1.5 h-[3.5px] w-8 rounded-full bg-indigo-600 pointer-events-none"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VARIANT 2: CURVED NOTCH CUTOUT & FLOATING DOT (ICON + TEXT)               -->
+    <!-- ========================================================================= -->
+    <div class="w-full flex flex-col items-center gap-2.5">
+      <div class="flex items-center justify-between w-full max-w-[420px] px-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-white/80 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          Variant 2: Organic Curved Notch & Dot
+        </span>
+        <span class="text-[11px] font-mono text-white/60">Concave Dip &bull; Floating Dot</span>
+      </div>
+
+      <!-- Nav Bar 2 Container with Dynamic SVG Background -->
+      <div class="relative w-full max-w-[420px] h-[78px] select-none">
+        
+        <!-- SVG Canvas for the smooth scooped notch -->
+        <svg id="nav2Svg" class="absolute inset-0 w-full h-full filter drop-shadow-xl pointer-events-none overflow-visible" viewBox="0 0 420 78" preserveAspectRatio="none">
+          <!-- White navbar body with dynamic concave notch dip -->
+          <path id="nav2NotchPath" class="notch-path" fill="#FFFFFF" d="" />
+          <!-- Animated purple dot in the center of the scoop -->
+          <circle id="nav2Dot" class="notch-dot" cx="294" cy="11" r="3.5" fill="#4F46E5" />
+        </svg>
+
+        <!-- 5 Interactive Nav Buttons overlay -->
+        <div class="relative z-10 w-full h-full flex items-center justify-between px-2" id="nav2BtnGroup">
+          
+          <!-- Tab 1: Home -->
+          <button onclick="setActiveNav2(0, this)" class="nav2-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center pt-2 gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-9z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Home</span>
+          </button>
+
+          <!-- Tab 2: Search -->
+          <button onclick="setActiveNav2(1, this)" class="nav2-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center pt-2 gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Search</span>
+          </button>
+
+          <!-- Tab 3: Likes -->
+          <button onclick="setActiveNav2(2, this)" class="nav2-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center pt-2 gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Likes</span>
+          </button>
+
+          <!-- Tab 4: Notifications (Default Active in reference image) -->
+          <button onclick="setActiveNav2(3, this)" class="nav2-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center pt-2 gap-1 text-indigo-600 focus:outline-none font-bold">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+            </svg>
+            <span class="text-[10px] font-bold tracking-tight">Notifications</span>
+          </button>
+
+          <!-- Tab 5: Profile -->
+          <button onclick="setActiveNav2(4, this)" class="nav2-btn nav-tab-btn flex-1 h-full flex flex-col items-center justify-center pt-2 gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Profile</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VARIANT 3: SOFT CAPSULE / PILL HIGHLIGHT (ICON + TEXT)                    -->
+    <!-- ========================================================================= -->
+    <div class="w-full flex flex-col items-center gap-2.5">
+      <div class="flex items-center justify-between w-full max-w-[420px] px-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-white/80 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          Variant 3: Soft Capsule Pill
+        </span>
+        <span class="text-[11px] font-mono text-white/60">Sliding Background &bull; Icon + Text</span>
+      </div>
+
+      <!-- Nav Bar 3 Element -->
+      <div class="relative w-full max-w-[420px] bg-white rounded-[34px] shadow-nav-float p-2 px-3 border border-white/40 select-none">
+        
+        <!-- Relative Wrapper for sliding pill -->
+        <div class="relative flex items-center justify-between w-full h-[64px]" id="nav3Container">
+          
+          <!-- Sliding Background Capsule -->
+          <div id="nav3Capsule" class="nav-indicator-capsule absolute left-0 top-0.5 h-[60px] rounded-[22px] bg-indigo-50 border border-indigo-100/70 pointer-events-none transition-all duration-300"></div>
+
+          <!-- Tab 1: Home (Default Active in reference image) -->
+          <button onclick="setActiveNav3(0, this)" class="nav3-btn nav-tab-btn relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 text-indigo-600 font-bold focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-9z"/>
+            </svg>
+            <span class="text-[10px] font-bold tracking-tight">Home</span>
+          </button>
+
+          <!-- Tab 2: Search -->
+          <button onclick="setActiveNav3(1, this)" class="nav3-btn nav-tab-btn relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Search</span>
+          </button>
+
+          <!-- Tab 3: Likes -->
+          <button onclick="setActiveNav3(2, this)" class="nav3-btn nav-tab-btn relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Likes</span>
+          </button>
+
+          <!-- Tab 4: Notifications -->
+          <button onclick="setActiveNav3(3, this)" class="nav3-btn nav-tab-btn relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Notifications</span>
+          </button>
+
+          <!-- Tab 5: Profile -->
+          <button onclick="setActiveNav3(4, this)" class="nav3-btn nav-tab-btn relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 focus:outline-none">
+            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+            <span class="text-[10px] font-semibold tracking-tight">Profile</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="w-full max-w-4xl mx-auto py-3 text-center text-xs text-white/60 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/10 mt-6">
+    <span>Interactive SVG & Tailwind CSS Implementation &bull; Production Ready</span>
+    <span class="font-semibold text-white/80">Click any tab to test the dynamic transitions</span>
+  </footer>
+
+
+  <!-- MODAL: CODE EXPORT & DOCUMENTATION -->
+  <div id="codeModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl text-slate-100">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-900/90">
+        <div class="flex items-center gap-2.5">
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          <h3 class="font-bold text-sm text-white">Get Implementation Code</h3>
+        </div>
+        <button onclick="toggleCodeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Tab Buttons for Code Variants -->
+      <div class="flex items-center gap-2 px-5 pt-3 bg-slate-950/40 border-b border-slate-800 text-xs">
+        <button onclick="switchCodeTab('v1')" id="tabCodeBtn1" class="px-3.5 py-2 font-bold rounded-t-xl bg-slate-800 text-indigo-400 border-t-2 border-indigo-500">Variant 1 (Underline)</button>
+        <button onclick="switchCodeTab('v2')" id="tabCodeBtn2" class="px-3.5 py-2 font-bold rounded-t-xl text-slate-400 hover:text-white">Variant 2 (Notch + Dot)</button>
+        <button onclick="switchCodeTab('v3')" id="tabCodeBtn3" class="px-3.5 py-2 font-bold rounded-t-xl text-slate-400 hover:text-white">Variant 3 (Capsule Pill)</button>
+      </div>
+
+      <!-- Code Snippet Container -->
+      <div class="p-5 flex-1 overflow-y-auto">
+        <div class="relative">
+          <button onclick="copyCurrentCode()" class="absolute top-3 right-3 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow transition">
+            <span id="copyIcon">📋</span>
+            <span id="copyText">Copy Code</span>
+          </button>
+          <pre class="bg-slate-950 p-4 rounded-2xl text-xs text-indigo-200 overflow-x-auto border border-slate-800/80"><code id="codeDisplayArea"></code></pre>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-950/60 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+        <span>Tailwind CSS + SVG + Vanilla JS</span>
+        <button onclick="toggleCodeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl transition">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- JAVASCRIPT: MICRO-INTERACTIONS & SVG MATH -->
+  <script>
+    // Audio synthesis for tactile click feedback
+    let audioCtx = null;
+    let hapticsEnabled = true;
+
+    function playHaptic(freq = 320, duration = 0.04) {
+      if (!hapticsEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + duration);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // audio optional
+      }
+    }
+
+    function toggleHaptics() {
+      hapticsEnabled = !hapticsEnabled;
+      document.getElementById('soundIcon').textContent = hapticsEnabled ? '🔊' : '🔇';
+      document.getElementById('soundLabel').textContent = hapticsEnabled ? 'Haptic Audio: ON' : 'Haptic Audio: OFF';
+    }
+
+    // =========================================================================
+    // VARIANT 1 LOGIC: SLIDING UNDERLINE
+    // =========================================================================
+    let currentNav1Index = 0;
+
+    function updateNav1Indicator(index) {
+      const container = document.getElementById('nav1Container');
+      const buttons = container.querySelectorAll('.nav1-btn');
+      const indicator = document.getElementById('nav1Indicator');
+      if (!buttons[index]) return;
+
+      const targetBtn = buttons[index];
+      const targetRect = targetBtn.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      const btnCenterX = (targetRect.left - containerRect.left) + (targetRect.width / 2);
+      const indicatorWidth = 32; // width of the underline pill
+      const leftOffset = btnCenterX - (indicatorWidth / 2);
+
+      indicator.style.transform = `translateX(${leftOffset}px)`;
+
+      // Update active colors
+      buttons.forEach((btn, i) => {
+        if (i === index) {
+          btn.classList.remove('text-slate-400');
+          btn.classList.add('text-indigo-600');
+        } else {
+          btn.classList.remove('text-indigo-600');
+          btn.classList.add('text-slate-400');
+        }
+      });
+    }
+
+    function setActiveNav1(index, elem) {
+      currentNav1Index = index;
+      updateNav1Indicator(index);
+      playHaptic(420, 0.035);
+    }
+
+    // =========================================================================
+    // VARIANT 2 LOGIC: DYNAMIC CURVED NOTCH & DOT
+    // =========================================================================
+    let currentNav2Index = 3; // Default is Notifications in reference image
+    const NAV2_WIDTH = 420;
+    const NAV2_HEIGHT = 78;
+    const CORNER_RADIUS = 34;
+
+    /**
+     * Generates a smooth SVG path with rounded pill corners AND a fluid concave scoop at notchCenterX
+     */
+    function generateNotchPath(notchCenterX) {
+      const w = NAV2_WIDTH;
+      const h = NAV2_HEIGHT;
+      const r = CORNER_RADIUS;
+
+      // Scoop geometry
+      const scoopHalfWidth = 26; // half width of notch on top edge
+      const scoopDepth = 15;     // depth of the downward scoop
+      const leftScoop = notchCenterX - scoopHalfWidth;
+      const rightScoop = notchCenterX + scoopHalfWidth;
+
+      // Path starting from top-left after corner
+      let d = `M ${r} 0 `;
+
+      // Line to start of notch
+      d += `L ${leftScoop} 0 `;
+
+      // Smooth cubic bezier into the concave scoop
+      // Control points for organic fluid shoulder
+      d += `C ${leftScoop + 10} 0, ${notchCenterX - 14} ${scoopDepth}, ${notchCenterX} ${scoopDepth} `;
+      d += `C ${notchCenterX + 14} ${scoopDepth}, ${rightScoop - 10} 0, ${rightScoop} 0 `;
+
+      // Line to top-right corner start
+      d += `L ${w - r} 0 `;
+
+      // Top-right corner
+      d += `A ${r} ${r} 0 0 1 ${w} ${r} `;
+
+      // Right vertical edge
+      d += `L ${w} ${h - r} `;
+
+      // Bottom-right corner
+      d += `A ${r} ${r} 0 0 1 ${w - r} ${h} `;
+
+      // Bottom horizontal edge
+      d += `L ${r} ${h} `;
+
+      // Bottom-left corner
+      d += `A ${r} ${r} 0 0 1 0 ${h - r} `;
+
+      // Left vertical edge
+      d += `L 0 ${r} `;
+
+      // Top-left corner
+      d += `A ${r} ${r} 0 0 1 ${r} 0 `;
+
+      d += `Z`;
+      return d;
+    }
+
+    function updateNav2Notch(index) {
+      const btnGroup = document.getElementById('nav2BtnGroup');
+      const buttons = btnGroup.querySelectorAll('.nav2-btn');
+      const notchPathElem = document.getElementById('nav2NotchPath');
+      const dotElem = document.getElementById('nav2Dot');
+
+      if (!buttons[index]) return;
+
+      const targetBtn = buttons[index];
+      const targetRect = targetBtn.getBoundingClientRect();
+      const groupRect = btnGroup.getBoundingClientRect();
+
+      // Relative center X mapped to SVG coordinate space (0 to 420)
+      const relativeRatio = ((targetRect.left - groupRect.left) + (targetRect.width / 2)) / groupRect.width;
+      const notchCenterX = Math.round(relativeRatio * NAV2_WIDTH);
+
+      // Apply new SVG path with notch at notchCenterX
+      notchPathElem.setAttribute('d', generateNotchPath(notchCenterX));
+
+      // Move floating dot directly inside the dip
+      dotElem.setAttribute('cx', notchCenterX);
+      dotElem.setAttribute('cy', '10.5');
+
+      // Update button colors and typography
+      buttons.forEach((btn, i) => {
+        const icon = btn.querySelector('svg');
+        const label = btn.querySelector('span');
+        if (i === index) {
+          btn.classList.remove('text-slate-400', 'font-semibold');
+          btn.classList.add('text-indigo-600', 'font-bold');
+        } else {
+          btn.classList.remove('text-indigo-600', 'font-bold');
+          btn.classList.add('text-slate-400', 'font-semibold');
+        }
+      });
+    }
+
+    function setActiveNav2(index, elem) {
+      currentNav2Index = index;
+      updateNav2Notch(index);
+      playHaptic(480, 0.04);
+    }
+
+    // =========================================================================
+    // VARIANT 3 LOGIC: SOFT CAPSULE PILL
+    // =========================================================================
+    let currentNav3Index = 0; // Default is Home in reference image
+
+    function updateNav3Capsule(index) {
+      const container = document.getElementById('nav3Container');
+      const buttons = container.querySelectorAll('.nav3-btn');
+      const capsule = document.getElementById('nav3Capsule');
+      if (!buttons[index]) return;
+
+      const targetBtn = buttons[index];
+      const targetRect = targetBtn.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      const btnLeft = targetRect.left - containerRect.left;
+      const btnWidth = targetRect.width;
+
+      // Fit capsule with a subtle inset
+      const padding = 2;
+      capsule.style.width = `${btnWidth}px`;
+      capsule.style.transform = `translateX(${btnLeft}px)`;
+
+      // Update active colors
+      buttons.forEach((btn, i) => {
+        if (i === index) {
+          btn.classList.remove('text-slate-400', 'font-semibold');
+          btn.classList.add('text-indigo-600', 'font-bold');
+        } else {
+          btn.classList.remove('text-indigo-600', 'font-bold');
+          btn.classList.add('text-slate-400', 'font-semibold');
+        }
+      });
+    }
+
+    function setActiveNav3(index, elem) {
+      currentNav3Index = index;
+      updateNav3Capsule(index);
+      playHaptic(360, 0.035);
+    }
+
+    // Resize handling to keep indicators aligned
+    window.addEventListener('resize', () => {
+      updateNav1Indicator(currentNav1Index);
+      updateNav2Notch(currentNav2Index);
+      updateNav3Capsule(currentNav3Index);
+    });
+
+    // Initial render on DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        updateNav1Indicator(currentNav1Index);
+        updateNav2Notch(currentNav2Index);
+        updateNav3Capsule(currentNav3Index);
+      }, 50);
+    });
+
+    // =========================================================================
+    // CODE EXPORT MODAL LOGIC
+    // =========================================================================
+    let currentCodeTab = 'v1';
+
+    const CODE_SNIPPETS = {
+      v1: `<!-- VARIANT 1: MINIMAL UNDERLINE SLIDER (HTML + Tailwind) -->
+<div class="relative w-full max-w-[420px] bg-white rounded-[34px] shadow-xl p-2.5 px-4 flex items-center justify-between border border-white/40">
+  <div class="relative flex items-center justify-between w-full h-[62px]" id="nav1Container">
+    
+    <!-- Tab 1: Home (Active) -->
+    <button onclick="setActive(0)" class="flex-1 h-full flex items-center justify-center text-indigo-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-9z"/>
+      </svg>
+    </button>
+
+    <!-- Tab 2: Search -->
+    <button onclick="setActive(1)" class="flex-1 h-full flex items-center justify-center text-slate-400">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+      </svg>
+    </button>
+
+    <!-- Tab 3: Likes -->
+    <button onclick="setActive(2)" class="flex-1 h-full flex items-center justify-center text-slate-400">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+      </svg>
+    </button>
+
+    <!-- Tab 4: Notifications -->
+    <button onclick="setActive(3)" class="flex-1 h-full flex items-center justify-center text-slate-400">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+      </svg>
+    </button>
+
+    <!-- Tab 5: Profile -->
+    <button onclick="setActive(4)" class="flex-1 h-full flex items-center justify-center text-slate-400">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+      </svg>
+    </button>
+
+    <!-- Sliding Underline Indicator -->
+    <div id="indicator" class="absolute bottom-1 h-[3.5px] w-8 rounded-full bg-indigo-600 transition-transform duration-300 ease-out"></div>
+  </div>
+</div>`,
+
+      v2: `<!-- VARIANT 2: CURVED NOTCH & FLOATING DOT (HTML + SVG + Tailwind) -->
+<div class="relative w-full max-w-[420px] h-[78px]">
+  <!-- Dynamic SVG Background with Notch & Floating Dot -->
+  <svg class="absolute inset-0 w-full h-full drop-shadow-lg pointer-events-none" viewBox="0 0 420 78">
+    <path id="notchPath" fill="#FFFFFF" class="transition-all duration-300 ease-out" />
+    <circle id="notchDot" cx="294" cy="11" r="3.5" fill="#4F46E5" class="transition-all duration-300 ease-out" />
+  </svg>
+
+  <!-- Button Items -->
+  <div class="relative z-10 w-full h-full flex items-center justify-between px-2">
+    <!-- Tab items with icon & label -->
+    <button onclick="setActive(0)" class="flex-1 flex flex-col items-center pt-2 text-slate-400">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">...</svg>
+      <span class="text-[10px]">Home</span>
+    </button>
+    <!-- Repeat for other 4 buttons -->
+  </div>
+</div>
+
+<script>
+// Formula for the smooth concave notch:
+function generateNotchPath(cx) {
+  const w = 420, h = 78, r = 34, scoop = 26, depth = 15;
+  return \`M \${r} 0 L \${cx - scoop} 0 C \${cx - scoop + 10} 0, \${cx - 14} \${depth}, \${cx} \${depth} C \${cx + 14} \${depth}, \${cx + scoop - 10} 0, \${cx + scoop} 0 L \${w - r} 0 A \${r} \${r} 0 0 1 \${w} \${r} L \${w} \${h - r} A \${r} \${r} 0 0 1 \${w - r} \${h} L \${r} \${h} A \${r} \${r} 0 0 1 0 \${h - r} L 0 \${r} A \${r} \${r} 0 0 1 \${r} 0 Z\`;
+}
+<\/script>`,
+
+      v3: `<!-- VARIANT 3: SOFT CAPSULE PILL HIGHLIGHT (HTML + Tailwind) -->
+<div class="relative w-full max-w-[420px] bg-white rounded-[34px] shadow-xl p-2 px-3 border border-white/40">
+  <div class="relative flex items-center justify-between w-full h-[64px]" id="nav3Container">
+    
+    <!-- Sliding Background Capsule Highlight -->
+    <div id="capsule" class="absolute left-0 top-0.5 h-[60px] rounded-[22px] bg-indigo-50 border border-indigo-100 transition-transform duration-300 ease-out pointer-events-none"></div>
+
+    <!-- Active Tab (Home) -->
+    <button onclick="setActive(0)" class="relative z-10 flex-1 h-full flex flex-col items-center justify-center text-indigo-600 font-bold">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 19.5v-9z"/>
+      </svg>
+      <span class="text-[10px]">Home</span>
+    </button>
+
+    <!-- Inactive Tab (Search) -->
+    <button onclick="setActive(1)" class="relative z-10 flex-1 h-full flex flex-col items-center justify-center text-slate-400 font-semibold">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+      </svg>
+      <span class="text-[10px]">Search</span>
+    </button>
+  </div>
+</div>`
+    };
+
+    function toggleCodeModal() {
+      const modal = document.getElementById('codeModal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        switchCodeTab(currentCodeTab);
+      }
+    }
+
+    function switchCodeTab(tab) {
+      currentCodeTab = tab;
+      ['v1', 'v2', 'v3'].forEach(t => {
+        const btn = document.getElementById(`tabCodeBtn${t.replace('v', '')}`);
+        if (t === tab) {
+          btn.className = 'px-3.5 py-2 font-bold rounded-t-xl bg-slate-800 text-indigo-400 border-t-2 border-indigo-500';
+        } else {
+          btn.className = 'px-3.5 py-2 font-bold rounded-t-xl text-slate-400 hover:text-white';
+        }
+      });
+      document.getElementById('codeDisplayArea').textContent = CODE_SNIPPETS[tab];
+    }
+
+    function copyCurrentCode() {
+      const code = CODE_SNIPPETS[currentCodeTab];
+      navigator.clipboard.writeText(code).then(() => {
+        const text = document.getElementById('copyText');
+        const icon = document.getElementById('copyIcon');
+        text.textContent = 'Copied!';
+        icon.textContent = '✓';
+        setTimeout(() => {
+          text.textContent = 'Copy Code';
+          icon.textContent = '📋';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
